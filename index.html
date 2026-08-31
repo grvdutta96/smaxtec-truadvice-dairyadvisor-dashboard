@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>smaXtec TruAdvice™ Herd Advisory & ROI Platform | Gaurav Dutta, DVM</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-annotation/3.0.1/chartjs-plugin-annotation.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;background:#f1f5f9;color:#0f172a;font-size:13px;line-height:1.5}
+.page{max-width:1280px;margin:0 auto;padding:16px 20px}
+
+/* Top Header */
+.page-header{background:linear-gradient(135deg,#002a54 0%,#0284c7 100%);color:#fff;border-radius:12px;padding:18px 24px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;box-shadow:0 4px 14px rgba(0,42,84,0.18)}
+.header-left h1{font-size:22px;font-weight:800;letter-spacing:-0.02em;display:flex;align-items:center;gap:8px}
+.header-left p{font-size:12px;opacity:.9;margin-top:2px}
+.header-right{text-align:right;font-size:12px;opacity:.95}
+
+/* Top USP Banner */
+.usp-banner{background:#0f172a;color:#fff;border-radius:8px;padding:10px 16px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;border-left:5px solid #38bdf8}
+.usp-item{display:flex;align-items:center;gap:8px}
+.usp-badge{background:#0284c7;color:#fff;font-weight:700;font-size:11px;padding:2px 8px;border-radius:4px;text-transform:uppercase}
+.usp-text{font-size:12px;font-weight:500}
+
+/* Tab Navigation */
+.nav-tabs{display:flex;gap:6px;margin-bottom:14px;border-bottom:2px solid #cbd5e1;padding-bottom:1px;overflow-x:auto}
+.tab-btn{background:#e2e8f0;border:none;outline:none;padding:9px 18px;border-radius:8px 8px 0 0;font-size:12.5px;font-weight:700;color:#475569;cursor:pointer;transition:all .2s ease;display:flex;align-items:center;gap:6px;white-space:nowrap}
+.tab-btn:hover{background:#cbd5e1;color:#0f172a}
+.tab-btn.active{background:#002a54;color:#fff}
+
+/* Tab Content Areas */
+.tab-pane{display:none}
+.tab-pane.active{display:block}
+
+/* KPI Bar */
+.kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:14px}
+.kpi{background:#fff;border-radius:8px;padding:12px 14px;border:1px solid #cbd5e1;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,0.03)}
+.kpi-val{font-size:22px;font-weight:800;color:#002a54}
+.kpi-label{font-size:10.5px;color:#64748b;font-weight:700;text-transform:uppercase;letter-spacing:.03em;margin-top:2px}
+.kpi-sub{font-size:11px;margin-top:2px}
+
+/* Grid & Cards */
+.grid2{display:grid;grid-template-columns:1.2fr 0.8fr;gap:14px;margin-bottom:14px}
+.grid2-equal{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+.card{background:#fff;border:1px solid #cbd5e1;border-radius:10px;padding:16px;box-shadow:0 1px 3px rgba(0,0,0,0.04)}
+.card-title{font-size:13px;font-weight:700;color:#002a54;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center}
+.chart-container{position:relative;height:240px;width:100%}
+
+/* SOP / Advisory Box */
+.sop-box{background:#f8fafc;border-left:4px solid #0284c7;border-radius:0 8px 8px 0;padding:12px 14px;margin-top:12px;font-size:12px;color:#1e293b}
+.sop-title{font-weight:700;color:#002a54;margin-bottom:4px;display:flex;align-items:center;gap:6px}
+
+/* Badges & Tables */
+.badge{display:inline-block;font-size:10px;font-weight:700;padding:3px 8px;border-radius:100px;text-transform:uppercase}
+.badge-red{background:#fee2e2;color:#991b1b}
+.badge-amber{background:#fef3c7;color:#92400e}
+.badge-green{background:#dcfce7;color:#166534}
+.badge-blue{background:#e0f2fe;color:#0369a1}
+.data-table{width:100%;border-collapse:collapse;margin-top:8px;font-size:11.5px}
+.data-table th{background:#f1f5f9;color:#475569;font-weight:700;text-align:left;padding:7px 10px;border-bottom:1px solid #cbd5e1}
+.data-table td{padding:8px 10px;border-bottom:1px solid #e2e8f0}
+
+/* ROI Interactive Calculator */
+.roi-calculator{background:#fff;border:1px solid #cbd5e1;border-radius:10px;padding:20px;margin-bottom:14px}
+.roi-controls{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;background:#f8fafc;padding:14px;border-radius:8px;border:1px solid #e2e8f0;margin-bottom:16px}
+.control-group label{font-size:11.5px;font-weight:700;color:#334155;display:block;margin-bottom:4px}
+.control-group input{width:100%;padding:6px 10px;border:1px solid #cbd5e1;border-radius:6px;font-size:13px;font-weight:600}
+.roi-results-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}
+.roi-res-card{background:#f0fdf4;border:1px solid #86efac;border-radius:8px;padding:14px;text-align:center}
+.roi-res-val{font-size:22px;font-weight:800;color:#15803d}
+.roi-res-label{font-size:11px;font-weight:700;color:#166534;margin-top:2px}
+.roi-res-sub{font-size:10px;color:#475569;margin-top:2px}
+
+.footer{font-size:11px;color:#64748b;margin-top:16px;border-top:1px solid #cbd5e1;padding-top:12px;line-height:1.6}
+@media(max-width:850px){.grid2,.grid2-equal,.kpi-row,.roi-controls,.roi-results-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="page-header">
+    <div class="header-left">
+      <h1>🐄 smaXtec TruAdvice™ Herd Advisory Platform</h1>
+      <p>Commercial Territory Simulation: Rosendale Dairy · Fond du Lac County, WI · 1,200-cow Holstein Herd</p>
+    </div>
+    <div class="header-right">
+      <div style="font-weight:800;font-size:14px">Gaurav Dutta, DVM</div>
+      <div>Ph.D. Candidate, Dairy Cattle Genomics · UConn</div>
+      <div>grvdutta96@gmail.com</div>
+    </div>
+  </div>
+
+  <div class="usp-banner">
+    <div class="usp-item">
+      <span class="usp-badge">Core USP</span>
+      <span class="usp-text">⚡ <b>Early Disease Detection:</b> Up to <b>5 Days Before</b> Clinical Signs (Reticular IBT Precision ±0.018°C)</span>
+    </div>
+    <div class="usp-item">
+      <span class="usp-badge" style="background:#16a34a">Impact</span>
+      <span class="usp-text">🌱 <b>70% Antibiotic Reduction</b> via Targeted Preventative Interventions</span>
+    </div>
+  </div>
+
+  <div class="nav-tabs">
+    <button class="tab-btn active" onclick="switchTab('tab-health', this)">🩺 1. Herd Health & 5-Day Detection</button>
+    <button class="tab-btn" onclick="switchTab('tab-repro', this)">🧬 2. Reproduction & Calving</button>
+    <button class="tab-btn" onclick="switchTab('tab-feeding', this)">🌿 3. Feeding Management & pH</button>
+    <button class="tab-btn" onclick="switchTab('tab-heat', this)">🌡 4. Heat Stress & Barn THI</button>
+    <button class="tab-btn" onclick="switchTab('tab-roi', this)" style="background:#dcfce7;color:#14532d;border:1px solid #86efac">💰 5. Producer ROI Calculator</button>
+  </div>
+
+  <div id="tab-health" class="tab-pane active">
+    <div class="kpi-row">
+      <div class="kpi"><div class="kpi-val">1,174</div><div class="kpi-label">Active Monitored Boluses</div><div class="kpi-sub" style="color:#16a34a">97.8% Herd Coverage</div></div>
+      <div class="kpi"><div class="kpi-val" style="color:#dc2626">4 Cows</div><div class="kpi-label">Pre-Clinical Disease Alerts</div><div class="kpi-sub" style="color:#dc2626">Caught 48–120h in Advance</div></div>
+      <div class="kpi"><div class="kpi-val">101.6°F</div><div class="kpi-label">Herd Mean Reticular Temp</div><div class="kpi-sub" style="color:#64748b">Baseline Normal</div></div>
+      <div class="kpi"><div class="kpi-val" style="color:#16a34a">-70%</div><div class="kpi-label">Antibiotic Treatment Goal</div><div class="kpi-sub" style="color:#16a34a">Target Met this Month</div></div>
+    </div>
+
+    <div class="grid2">
+      <div class="card">
+        <div class="card-title">
+          <span>TruAdvice™ Multi-Day Pre-Clinical Fever & Rumination Tracking (Cow #3412)</span>
+          <span class="badge badge-red">Alert: Clinical Onset in 48h</span>
+        </div>
+        <div class="chart-container"><canvas id="healthChart"></canvas></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span>Daily Health Triage Queue</span>
+          <span class="badge badge-blue">Morning Protocols</span>
+        </div>
+        <table class="data-table">
+          <thead>
+            <tr><th>Cow ID</th><th>Group</th><th>Indicator</th><th>Pre-Warning</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><b>#3412</b></td><td>Fresh Pen 01</td><td>IBT +2.4°F, Rumination -35%</td><td><span class="badge badge-red">Day -2 Early Alert</span></td></tr>
+            <tr><td><b>#4801</b></td><td>Lactation 02</td><td>IBT +1.8°F, Drinking -22%</td><td><span class="badge badge-red">Day -1 Early Alert</span></td></tr>
+            <tr><td><b>#5033</b></td><td>Fresh Pen 02</td><td>Contraction drop >20%</td><td><span class="badge badge-amber">Day -3 Early Alert</span></td></tr>
+            <tr><td><b>#6120</b></td><td>Lactation 01</td><td>IBT Spike (+2.1°F)</td><td><span class="badge badge-amber">Day -2 Early Alert</span></td></tr>
+          </tbody>
+        </table>
+        <div class="sop-box">
+          <div class="sop-title">⚡ Advisor SOP: Preventative Intervention</div>
+          Cow #3412 is showing clear pre-clinical inflammatory spikes 48h before quarter swelling or milk clotting occurs. Protocol: Perform California Mastitis Test (CMT) & administer oral supportive anti-inflammatory fluids. <b>Prevents clinical mastitis progression and saves milk discard.</b>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="tab-repro" class="tab-pane">
+    <div class="kpi-row">
+      <div class="kpi"><div class="kpi-val">2 Cows</div><div class="kpi-label">Optimal Insemination Window</div><div class="kpi-sub" style="color:#16a34a">Act within 6–14 Hours</div></div>
+      <div class="kpi"><div class="kpi-val">1 Cow</div><div class="kpi-label">Calving Imminent</div><div class="kpi-sub" style="color:#0284c7">Expected in ~15 Hours</div></div>
+      <div class="kpi"><div class="kpi-val">94.2%</div><div class="kpi-label">AI Timing Accuracy</div><div class="kpi-sub" style="color:#16a34a">+4.5% Conception Rate</div></div>
+      <div class="kpi"><div class="kpi-val">108 Days</div><div class="kpi-label">Average Days Open</div><div class="kpi-sub" style="color:#16a34a">-12 Days vs Regional Avg</div></div>
+    </div>
+
+    <div class="grid2-equal">
+      <div class="card">
+        <div class="card-title">
+          <span>Heat Detection: Activity Index Spikes & Ideal AI Window</span>
+          <span class="badge badge-green">Insemination Window Open</span>
+        </div>
+        <div class="chart-container"><canvas id="reproChart"></canvas></div>
+        <div class="sop-box">
+          <div class="sop-title">🐄 Advisor SOP: Insemination Timing</div>
+          <b>Cow #2044:</b> Peak activity occurred 4 hours ago. Optimal AI window: <b>Next 6–10 hours</b> for maximum conception probability.
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span>Calving Prediction: Reticular Temperature Drop Dynamics</span>
+          <span class="badge badge-blue">Calving Alert ~15h Notice</span>
+        </div>
+        <div class="chart-container"><canvas id="calvingChart"></canvas></div>
+        <div class="sop-box">
+          <div class="sop-title">🍼 Advisor SOP: Maternity Pen Move</div>
+          <b>Cow #7210:</b> Inner body temp dropped 0.7°F below individual baseline. Move to individual maternity pen; notify night shift team for calving assistance.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="tab-feeding" class="tab-pane">
+    <div class="kpi-row">
+      <div class="kpi"><div class="kpi-val">6.34</div><div class="kpi-label">Herd Mean Rumen pH</div><div class="kpi-sub" style="color:#16a34a">Physiologically Stable</div></div>
+      <div class="kpi"><div class="kpi-val" style="color:#d97706">3 Cows</div><div class="kpi-label">SARA Risk (Fresh Pen)</div><div class="kpi-sub" style="color:#d97706">pH < 5.8 for >3.5h</div></div>
+      <div class="kpi"><div class="kpi-val">512 min</div><div class="kpi-label">Fresh Pen Rumination Avg</div><div class="kpi-sub" style="color:#16a34a">+24 min Post-Ration Shift</div></div>
+      <div class="kpi"><div class="kpi-val">4.2 Push-ups</div><div class="kpi-label">Daily Bunk Frequency</div><div class="kpi-sub" style="color:#0284c7">Target: 5.0 / day</div></div>
+    </div>
+
+    <div class="grid2">
+      <div class="card">
+        <div class="card-title">
+          <span>Continuous Reticular pH by Ration Group (Fresh vs High Lactation)</span>
+          <span class="badge badge-amber">Fresh Pen pH Dip</span>
+        </div>
+        <div class="chart-container"><canvas id="phChart"></canvas></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span>Feeding & Ration Optimization Tool</span>
+          <span class="badge badge-green">Nutrition Workflow</span>
+        </div>
+        <div class="sop-box" style="border-left-color:#16a34a">
+          <div class="sop-title">🌿 Advisor SOP: Nutritionist & TMR Audit</div>
+          Fresh Cow Pen 01 is exhibiting sustained sub-5.8 pH dips between 10:00 AM and 1:30 PM.<br><br>
+          <b>Recommended Action Items:</b>
+          <ul style="margin-left:18px;margin-top:4px">
+            <li>Conduct Penn State Particle Separator audit on Fresh TMR (target >8% on top sieve).</li>
+            <li>Increase physically effective NDF (peNDF) to stimulate saliva production.</li>
+            <li>Verify sodium bicarbonate buffer intake (0.75% DM).</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="tab-heat" class="tab-pane">
+    <div class="kpi-row">
+      <div class="kpi"><div class="kpi-val">THI 74</div><div class="kpi-label">Peak Barn THI Today</div><div class="kpi-sub" style="color:#d97706">Moderate Heat Stress</div></div>
+      <div class="kpi"><div class="kpi-val" style="color:#0284c7">+28%</div><div class="kpi-label">TruDrinking Water Surge</div><div class="kpi-sub" style="color:#0284c7">38.4 Gal/Cow/Day</div></div>
+      <div class="kpi"><div class="kpi-val">-14%</div><div class="kpi-label">Afternoon Rumination Lag</div><div class="kpi-sub" style="color:#dc2626">Recovered Overnight</div></div>
+      <div class="kpi"><div class="kpi-val">8 min</div><div class="kpi-label">Soaker Cycle Interval</div><div class="kpi-sub" style="color:#16a34a">Automated Activation</div></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        <span>Wisconsin Summer Climate: Barn THI vs Water Intake vs Rumination Response</span>
+        <span class="badge badge-amber">Heat Stress Mitigation Active</span>
+      </div>
+      <div class="chart-container"><canvas id="heatChart"></canvas></div>
+      <div class="sop-box">
+        <div class="sop-title">🌡 Advisor SOP: Ventilation & Bunk Feeding Shifts</div>
+        THI exceeded threshold 72 between 12:00 PM and 5:30 PM. TruDrinking sensor tracking captured immediate compensatory water intake surges. <b>Advisor Action:</b> Shift primary TMR delivery to 3:30 AM to maximize dry matter intake during cooler temperatures.
+      </div>
+    </div>
+  </div>
+
+  <div id="tab-roi" class="tab-pane">
+    <div class="roi-calculator">
+      <div class="card-title" style="margin-bottom:8px">
+        <span>💰 Interactive smaXtec Producer ROI & Economic Value Model</span>
+        <span class="badge badge-green">Wisconsin Commercial Herd Projection</span>
+      </div>
+      <p style="font-size:12px;color:#475569;margin-bottom:14px">Adjust herd parameters below to dynamically calculate projected annual financial returns with smaXtec integration.</p>
+
+      <div class="roi-controls">
+        <div class="control-group">
+          <label>Herd Size (Milking Cows):</label>
+          <input type="number" id="roiHerdSize" value="1200" step="50" oninput="calculateROI()">
+        </div>
+        <div class="control-group">
+          <label>Milk Price ($/cwt):</label>
+          <input type="number" id="roiMilkPrice" value="21.50" step="0.5" oninput="calculateROI()">
+        </div>
+        <div class="control-group">
+          <label>Avg Days Open Reduction (Days):</label>
+          <input type="number" id="roiDaysOpen" value="12" step="1" oninput="calculateROI()">
+        </div>
+      </div>
+
+      <div class="roi-results-grid">
+        <div class="roi-res-card">
+          <div class="roi-res-val" id="roiAntibiotics">$34,800</div>
+          <div class="roi-res-label">Antibiotic & Discard Savings</div>
+          <div class="roi-res-sub">70% reduction via 5-day early alerts</div>
+        </div>
+        <div class="roi-res-card">
+          <div class="roi-res-val" id="roiRepro">$32,400</div>
+          <div class="roi-res-label">Reproduction & Days Open</div>
+          <div class="roi-res-sub">Saved at $4.50/cow/day open</div>
+        </div>
+        <div class="roi-res-card">
+          <div class="roi-res-val" id="roiHeat">$24,600</div>
+          <div class="roi-res-label">Heat Stress Milk Protection</div>
+          <div class="roi-res-sub">Mitigating summer lactation drops</div>
+        </div>
+        <div class="roi-res-card">
+          <div class="roi-res-val" id="roiSara">$13,200</div>
+          <div class="roi-res-label">Fresh Cow SARA Prevention</div>
+          <div class="roi-res-sub">Continuous reticular pH monitoring</div>
+        </div>
+      </div>
+
+      <div style="background:#002a54;color:#fff;border-radius:8px;padding:16px 20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">
+        <div>
+          <div style="font-size:16px;font-weight:800">Total Estimated Annual Economic Benefit:</div>
+          <div style="font-size:12px;opacity:0.85">Direct bottom-line value delivered through preventative health and workflow automation.</div>
+        </div>
+        <div style="font-size:28px;font-weight:900;color:#4ade80" id="roiTotal">$105,000 / yr</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <b>smaXtec Advisory Prototype</b> · Technical Commercial Demonstration built by Gaurav Dutta, DVM (Ph.D. Candidate, UConn).<br>
+    Simulated metrics reflect smaXtec proprietary reticular telematics (IBT ±0.018°C, rumination contractions, continuous pH sensing, TruDrinking, TruAdvice AI).
+  </div>
+
+</div>
+
+<script>
+// Explicitly Register Chart.js Annotation Plugin
+if (window['chartjs-plugin-annotation']) {
+  Chart.register(window['chartjs-plugin-annotation']);
+}
+
+const gc = 'rgba(0,0,0,0.06)';
+const tc = '#64748b';
+
+// Tab Switching Mechanism
+function switchTab(tabId, btn) {
+  document.querySelectorAll('.tab-pane').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+  document.getElementById(tabId).classList.add('active');
+  btn.classList.add('active');
+}
+
+// -------------------------------------------------------------
+// Chart 1: 5-Day Early Detection (Health)
+// -------------------------------------------------------------
+new Chart(document.getElementById('healthChart'), {
+  type: 'line',
+  data: {
+    labels: ['Day -5', 'Day -4', 'Day -3 (Early Alert)', 'Day -2', 'Day -1', 'Day 0 (Clinical Signs)'],
+    datasets: [
+      {label: 'Inner Body Temp (°F) [Cow #3412]', data: [101.5, 101.7, 102.6, 103.4, 103.8, 104.1], borderColor: '#dc2626', borderWidth: 2.5, pointRadius: 4, fill: false, yAxisID: 'y1'},
+      {label: 'Rumination Activity (min/day)', data: [490, 485, 430, 360, 310, 280], borderColor: '#f97316', borderWidth: 2, pointRadius: 4, fill: false, borderDash: [4,3], yAxisID: 'y2'}
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: {labels: {font: {size: 10}, boxWidth: 10}},
+      annotation: {
+        annotations: {
+          earlyAlert: {type: 'line', scaleID: 'x', value: 'Day -3 (Early Alert)', borderColor: '#dc2626', borderWidth: 1.5, borderDash: [4,3], label: {display: true, content: '⚡ smaXtec 5-Day Pre-Clinical Detection', font: {size: 9}, color: '#dc2626', position: 'start', backgroundColor: 'transparent'}},
+          tempThresh: {type: 'line', scaleID: 'y1', value: 102.5, borderColor: '#dc2626', borderWidth: 1, borderDash: [3,3]}
+        }
+      }
+    },
+    scales: {
+      x: {grid: {color: gc}, ticks: {color: tc, font: {size: 9.5}}},
+      y1: {grid: {color: gc}, ticks: {color: '#dc2626', font: {size: 9.5}}, title: {display: true, text: 'Reticular Temp (°F)', color: '#dc2626', font: {size: 9.5}}, min: 100.5, max: 105.0, position: 'left'},
+      y2: {ticks: {color: '#f97316', font: {size: 9.5}}, title: {display: true, text: 'Rumination (min/day)', color: '#f97316', font: {size: 9.5}}, min: 200, max: 550, position: 'right', grid: {display: false}}
+    }
+  }
+});
+
+// -------------------------------------------------------------
+// Chart 2: Reproduction & Insemination Window
+// -------------------------------------------------------------
+new Chart(document.getElementById('reproChart'), {
+  type: 'line',
+  data: {
+    labels: ['-36h', '-24h', '-12h', 'Heat Onset', 'Peak (+4h)', 'Ideal AI Window', '+24h'],
+    datasets: [
+      {label: 'Activity Index (Cow #2044)', data: [80, 85, 110, 165, 210, 175, 90], borderColor: '#0284c7', borderWidth: 2.5, pointRadius: 3, fill: false}
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: {labels: {font: {size: 10}, boxWidth: 10}},
+      annotation: {
+        annotations: {
+          aiWindow: {type: 'box', xMin: 'Peak (+4h)', xMax: 'Ideal AI Window', backgroundColor: 'rgba(2,132,199,0.12)', borderColor: '#0284c7', borderWidth: 1, label: {display: true, content: 'Optimal Insemination Window', font: {size: 9}, color: '#0284c7', position: 'start'}}
+        }
+      }
+    },
+    scales: {
+      x: {grid: {color: gc}, ticks: {color: tc, font: {size: 9.5}}},
+      y: {grid: {color: gc}, ticks: {color: '#0284c7', font: {size: 9.5}}, title: {display: true, text: 'Activity Index', color: '#0284c7', font: {size: 9.5}}, min: 50, max: 240}
+    }
+  }
+});
+
+// -------------------------------------------------------------
+// Chart 3: Calving Prediction Temperature Drop
+// -------------------------------------------------------------
+new Chart(document.getElementById('calvingChart'), {
+  type: 'line',
+  data: {
+    labels: ['-48h', '-36h', '-24h', '-15h (Temp Drop)', '-8h', '-2h', 'Calving'],
+    datasets: [
+      {label: 'Reticular Temp Cow #7210 (°F)', data: [101.7, 101.6, 101.5, 100.8, 100.5, 100.4, 100.6], borderColor: '#0284c7', borderWidth: 2.5, pointRadius: 3, fill: false}
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: {labels: {font: {size: 10}, boxWidth: 10}},
+      annotation: {
+        annotations: {
+          calvLine: {type: 'line', scaleID: 'x', value: '-15h (Temp Drop)', borderColor: '#0284c7', borderWidth: 1.5, borderDash: [4,3], label: {display: true, content: '⚡ Calving Alert (~15h in advance)', font: {size: 9}, color: '#0284c7', position: 'start', backgroundColor: 'transparent'}}
+        }
+      }
+    },
+    scales: {
+      x: {grid: {color: gc}, ticks: {color: tc, font: {size: 9.5}}},
+      y: {grid: {color: gc}, ticks: {color: tc, font: {size: 9.5}}, title: {display: true, text: 'Temp (°F)', color: tc, font: {size: 9.5}}, min: 100.0, max: 102.2}
+    }
+  }
+});
+
+// -------------------------------------------------------------
+// Chart 4: Feeding & Continuous Rumen pH
+// -------------------------------------------------------------
+new Chart(document.getElementById('phChart'), {
+  type: 'line',
+  data: {
+    labels: ['04:00', '07:00', '10:00 (Post-Feed)', '13:00', '16:00', '19:00', '22:00'],
+    datasets: [
+      {label: 'Fresh Cow Pen Avg pH', data: [6.25, 5.95, 5.68, 5.58, 5.82, 6.05, 6.18], borderColor: '#dc2626', borderWidth: 2.5, pointRadius: 3, fill: false},
+      {label: 'High Lactation Pen pH', data: [6.45, 6.40, 6.32, 6.30, 6.38, 6.42, 6.48], borderColor: '#16a34a', borderWidth: 2, pointRadius: 2, fill: false}
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: {labels: {font: {size: 10}, boxWidth: 10}},
+      annotation: {
+        annotations: {
+          saraLimit: {type: 'line', scaleID: 'y', value: 5.8, borderColor: '#dc2626', borderWidth: 1.5, borderDash: [4,3], label: {display: true, content: 'SARA Critical Threshold (pH 5.8)', font: {size: 9}, color: '#dc2626', position: 'start', backgroundColor: 'transparent'}}
+        }
+      }
+    },
+    scales: {
+      x: {grid: {color: gc}, ticks: {color: tc, font: {size: 9.5}}},
+      y: {grid: {color: gc}, ticks: {color: tc, font: {size: 9.5}}, title: {display: true, text: 'Reticular pH', color: tc, font: {size: 9.5}}, min: 5.3, max: 6.8}
+    }
+  }
+});
+
+// -------------------------------------------------------------
+// Chart 5: Heat Stress & Barn THI
+// -------------------------------------------------------------
+new Chart(document.getElementById('heatChart'), {
+  type: 'line',
+  data: {
+    labels: ['00:00', '04:00', '08:00', '12:00', '16:00 (Peak)', '20:00', '23:00'],
+    datasets: [
+      {label: 'Barn THI Index', data: [68, 66, 69, 75, 82, 78, 72], borderColor: '#f97316', borderWidth: 2.5, pointRadius: 2, fill: false, yAxisID: 'y1'},
+      {label: 'TruDrinking Cycles / Day', data: [12, 10, 14, 18, 24, 21, 15], borderColor: '#0284c7', borderWidth: 2, pointRadius: 2, fill: false, borderDash: [4,3], yAxisID: 'y2'},
+      {label: 'Herd Rumination Index (%)', data: [98, 100, 96, 86, 72, 78, 92], borderColor: '#16a34a', borderWidth: 1.5, pointRadius: 2, fill: false, yAxisID: 'y2'}
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: {labels: {font: {size: 10}, boxWidth: 10}},
+      annotation: {
+        annotations: {
+          thiThresh: {type: 'line', scaleID: 'y1', value: 72, borderColor: '#f97316', borderWidth: 1, borderDash: [4,3], label: {display: true, content: 'Heat Stress Threshold (THI 72)', font: {size: 9}, color: '#f97316', position: 'start', backgroundColor: 'transparent'}}
+        }
+      }
+    },
+    scales: {
+      x: {grid: {color: gc}, ticks: {color: tc, font: {size: 9.5}}},
+      y1: {grid: {color: gc}, ticks: {color: '#f97316', font: {size: 9.5}}, title: {display: true, text: 'THI Index', color: '#f97316', font: {size: 9.5}}, min: 60, max: 90, position: 'left'},
+      y2: {ticks: {color: tc, font: {size: 9.5}}, title: {display: true, text: 'Cycles / Index %', color: tc, font: {size: 9.5}}, min: 0, max: 110, position: 'right', grid: {display: false}}
+    }
+  }
+});
+
+// -------------------------------------------------------------
+// Interactive Producer ROI Economic Calculator Logic
+// -------------------------------------------------------------
+function calculateROI() {
+  const herd = parseFloat(document.getElementById('roiHerdSize').value) || 1200;
+  const milkPrice = parseFloat(document.getElementById('roiMilkPrice').value) || 21.50;
+  const daysOpen = parseFloat(document.getElementById('roiDaysOpen').value) || 12;
+
+  // Economic Modeling Equations
+  const antibioticSavings = herd * 29.00; // $29/cow saved in treatments & discard
+  const reproSavings = herd * (daysOpen * 2.25); // $2.25/day saved per cow
+  const heatSavings = herd * (milkPrice * 0.95); // Mitigating 0.95 cwt drop/cow
+  const saraSavings = herd * 11.00; // $11/cow saved in fresh transition metabolic lag
+
+  const totalBenefit = antibioticSavings + reproSavings + heatSavings + saraSavings;
+
+  document.getElementById('roiAntibiotics').textContent = '$' + Math.round(antibioticSavings).toLocaleString();
+  document.getElementById('roiRepro').textContent = '$' + Math.round(reproSavings).toLocaleString();
+  document.getElementById('roiHeat').textContent = '$' + Math.round(heatSavings).toLocaleString();
+  document.getElementById('roiSara').textContent = '$' + Math.round(saraSavings).toLocaleString();
+  document.getElementById('roiTotal').textContent = '$' + Math.round(totalBenefit).toLocaleString() + ' / yr';
+}
+calculateROI();
+</script>
+</body>
+</html>
