@@ -2,7 +2,7 @@
 
 An interactive commercial demonstration platform built to model **smaXtec bolus telematics**, early disease intervention workflows, and producer economic returns for large-scale Midwest dairy operations (1,200-cow Holstein simulation).
 
-🔗 **Live Interactive Dashboard:** [View Dashboard](https://<your-username>.github.io/<your-repo-name>/)
+🔗 **Live Interactive Dashboard:** [View Dashboard]( https://grvdutta96.github.io/smaxtec-truadvice-dairyadvisor-dashboard/)
 
 ---
 
